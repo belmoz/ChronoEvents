@@ -1,6 +1,6 @@
 export interface IPeriod {
 	period: string;
-	title: string;
+	category: string;
 	events: IEvent[];
 }
 export interface IEvent {
@@ -11,7 +11,7 @@ export interface IEvent {
 export const periods: IPeriod[] = [
 	{
 		period: "period 1",
-		title: "title 1",
+		category: "Литература",
 		events: [
 			{
 				title: "event title 1",
@@ -37,7 +37,7 @@ export const periods: IPeriod[] = [
 	},
 	{
 		period: "period 2",
-		title: "title 2",
+		category: "Кино",
 		events: [
 			{
 				title: "event title 1",
@@ -63,7 +63,7 @@ export const periods: IPeriod[] = [
 	},
 	{
 		period: "period 3",
-		title: "title 3",
+		category: "Искусство",
 		events: [
 			{
 				title: "event title 1",
@@ -89,7 +89,7 @@ export const periods: IPeriod[] = [
 	},
 	{
 		period: "period 4",
-		title: "title 4",
+		category: "Театр",
 		events: [
 			{
 				title: "event title 1",
@@ -115,7 +115,7 @@ export const periods: IPeriod[] = [
 	},
 	{
 		period: "period 5",
-		title: "title 5",
+		category: "Литература",
 		events: [
 			{
 				title: "event title 1",
@@ -141,7 +141,7 @@ export const periods: IPeriod[] = [
 	},
 	{
 		period: "period 6",
-		title: "title 6",
+		category: "Кино",
 		events: [
 			{
 				title: "event title 1",

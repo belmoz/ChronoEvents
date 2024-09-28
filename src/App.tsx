@@ -1,13 +1,18 @@
-import { useState } from "react";
-import EventSlider from "./components/EventSlider/EventSlider";
 import PeriodSlider from "./components/PeriodSlider/PeriodSlider";
-import { SwiperClass } from "swiper/react";
 import { periods } from "./fakeDB/periods";
+import { ContainerStyled, SectionStyled } from "./styles/App.styles";
+import { GlobalStyles, NormalizeStyles } from "./styles/Global.styles";
 
 const App = () => {
 	return (
 		<>
-			<PeriodSlider periods={periods} />
+			<SectionStyled>
+				<ContainerStyled>
+					<PeriodSlider periods={periods} />
+				</ContainerStyled>
+			</SectionStyled>
+			<NormalizeStyles />
+			<GlobalStyles />
 		</>
 	);
 };
