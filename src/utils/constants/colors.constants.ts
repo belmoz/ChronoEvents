@@ -8,9 +8,9 @@ export const colors = {
 	},
 	primary: "rgba(93, 95, 239, 1)",
 	secondary: "rgba(239, 93, 168, 1)",
-	tertiary: "rgba(56, 119, 238, 1)",
-};
-
-export const setColorTransparency = (color: string, transparency: number) => {
-	return `rgba(${color}, ${transparency})`;
+	tertiary: {
+		"010": "rgba(56, 119, 238, 0.1)",
+		main: "rgba(56, 119, 238, 1)",
+	},
+	white: "rgba(255, 255, 255, 1)",
 };

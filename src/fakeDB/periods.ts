@@ -4,7 +4,7 @@ export interface IPeriod {
 	events: IEvent[];
 }
 export interface IEvent {
-	title: string;
+	year: string;
 	content: string;
 }
 
@@ -14,24 +14,26 @@ export const periods: IPeriod[] = [
 		category: "Литература",
 		events: [
 			{
-				title: "event title 1",
-				content: "event content 1",
+				year: "2015",
+				content: "13 сентября — частное солнечное затмение, видимое в Южной Африке и части Антарктиды",
 			},
 			{
-				title: "event title 2",
-				content: "event content 2",
+				year: "2016",
+				content:
+					"Телескоп «Хаббл» обнаружил самую удалённую из всех обнаруженных галактик, получившую обозначение GN-z11",
 			},
 			{
-				title: "event title 3",
-				content: "event content 3",
+				year: "2017",
+				content: "Компания Tesla официально представила первый в мире электрический грузовик Tesla Semi",
 			},
 			{
-				title: "event title 4",
-				content: "event content 4",
+				year: "2020",
+				content:
+					"Телескоп «Хаббл» обнаружил самую удалённую из всех обнаруженных галактик, получившую обозначение GN-z11",
 			},
 			{
-				title: "event title 5",
-				content: "event content 5",
+				year: "2022",
+				content: "13 сентября — частное солнечное затмение, видимое в Южной Африке и части Антарктиды",
 			},
 		],
 	},
@@ -40,23 +42,23 @@ export const periods: IPeriod[] = [
 		category: "Кино",
 		events: [
 			{
-				title: "event title 1",
+				year: "event year 1",
 				content: "event content 1",
 			},
 			{
-				title: "event title 2",
+				year: "event year 2",
 				content: "event content 2",
 			},
 			{
-				title: "event title 3",
+				year: "event year 3",
 				content: "event content 3",
 			},
 			{
-				title: "event title 4",
+				year: "event year 4",
 				content: "event content 4",
 			},
 			{
-				title: "event title 5",
+				year: "event year 5",
 				content: "event content 5",
 			},
 		],
@@ -66,23 +68,23 @@ export const periods: IPeriod[] = [
 		category: "Искусство",
 		events: [
 			{
-				title: "event title 1",
+				year: "event year 1",
 				content: "event content 1",
 			},
 			{
-				title: "event title 2",
+				year: "event year 2",
 				content: "event content 2",
 			},
 			{
-				title: "event title 3",
+				year: "event year 3",
 				content: "event content 3",
 			},
 			{
-				title: "event title 4",
+				year: "event year 4",
 				content: "event content 4",
 			},
 			{
-				title: "event title 5",
+				year: "event year 5",
 				content: "event content 5",
 			},
 		],
@@ -92,23 +94,23 @@ export const periods: IPeriod[] = [
 		category: "Театр",
 		events: [
 			{
-				title: "event title 1",
+				year: "event year 1",
 				content: "event content 1",
 			},
 			{
-				title: "event title 2",
+				year: "event year 2",
 				content: "event content 2",
 			},
 			{
-				title: "event title 3",
+				year: "event year 3",
 				content: "event content 3",
 			},
 			{
-				title: "event title 4",
+				year: "event year 4",
 				content: "event content 4",
 			},
 			{
-				title: "event title 5",
+				year: "event year 5",
 				content: "event content 5",
 			},
 		],
@@ -118,23 +120,23 @@ export const periods: IPeriod[] = [
 		category: "Литература",
 		events: [
 			{
-				title: "event title 1",
+				year: "event year 1",
 				content: "event content 1",
 			},
 			{
-				title: "event title 2",
+				year: "event year 2",
 				content: "event content 2",
 			},
 			{
-				title: "event title 3",
+				year: "event year 3",
 				content: "event content 3",
 			},
 			{
-				title: "event title 4",
+				year: "event year 4",
 				content: "event content 4",
 			},
 			{
-				title: "event title 5",
+				year: "event year 5",
 				content: "event content 5",
 			},
 		],
@@ -144,23 +146,23 @@ export const periods: IPeriod[] = [
 		category: "Кино",
 		events: [
 			{
-				title: "event title 1",
+				year: "event year 1",
 				content: "event content 1",
 			},
 			{
-				title: "event title 2",
+				year: "event year 2",
 				content: "event content 2",
 			},
 			{
-				title: "event title 3",
+				year: "event year 3",
 				content: "event content 3",
 			},
 			{
-				title: "event title 4",
+				year: "event year 4",
 				content: "event content 4",
 			},
 			{
-				title: "event title 5",
+				year: "event year 5",
 				content: "event content 5",
 			},
 		],

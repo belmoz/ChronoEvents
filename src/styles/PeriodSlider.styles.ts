@@ -1,14 +1,11 @@
-import LeftArrowIcon from "src/components/Icons/LeftArrowIcon";
 import { colors } from "src/utils/constants/colors.constants";
 import { breakpoints } from "src/utils/constants/media.constants";
 import styled, { css } from "styled-components";
-import { Swiper } from "swiper/react";
 
 export const PeriodSliderWrapper = styled.div`
 	position: relative;
 	margin-left: calc((100% - (${breakpoints.container} / ${breakpoints.desktop}) * 100%) / 2);
-	min-height: 100dvh;
-	padding: 170px 80px 104px;
+	padding: 170px 0px 104px;
 	&:before,
 	&:after {
 		content: "";
@@ -26,9 +23,17 @@ export const PeriodSliderWrapper = styled.div`
 	}
 `;
 
+export const PaginationWrapperStyled = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding: 0px 80px 0px;
+	margin: 0px 0px 56px 0px;
+`;
+
 export const TitleStyled = styled.h2`
 	position: relative;
 	width: 431px;
+	margin: 0px 0px -81px 0px;
 
 	&:before {
 		content: "";
@@ -62,7 +67,7 @@ export const PaginationStyled = styled.div<{ $numberOfSlides: number }>(({ $numb
 			width: ${circleSize}px;
 			height: ${circleSize}px;
 			border-radius: 50%;
-			margin: -89px auto 0;
+			margin: 0 auto 0;
 			border: 1px solid ${colors.foreground["020"]};
 		}
 
@@ -113,7 +118,7 @@ export const PaginationStyled = styled.div<{ $numberOfSlides: number }>(({ $numb
 				& .period-slider-category {
 					opacity: 1;
 					display: inline;
-					transition: opacity 0.3s ease 1s;
+					transition: opacity 0.5s ease 1s;
 				}
 			}
 
@@ -144,6 +149,10 @@ export const PaginationStyled = styled.div<{ $numberOfSlides: number }>(({ $numb
 	`;
 });
 
+export const NavPaginationContainer = styled.div`
+	margin: -48px 0px 0px 0px;
+`;
+
 export const CenterMarkupStyled = styled.span<{ $isVertical?: boolean }>`
 	position: absolute;
 	top: ${({ $isVertical }) => ($isVertical ? "0" : `${circleSize / 2 + topCirclePadding}px`)};
@@ -172,12 +181,14 @@ export const PeriodPrevButtonStyled = styled.button`
 	align-items: center;
 	justify-content: center;
 	& svg {
+		height: 14px;
 		& path {
 			stroke: ${colors.foreground.main};
 		}
 	}
 	&:disabled {
 		opacity: 0.5;
+		cursor: default;
 	}
 `;
 

@@ -108,8 +108,13 @@ export const GlobalStyles = createGlobalStyle`
 
     h2 {
         font-size: 56px;
-        line-height: 1.2;
+        line-height: 120%;
         font-weight: bold;
+    }
+
+    p {
+        font-size: 20px;
+        line-height: 30px;
     }
 
 

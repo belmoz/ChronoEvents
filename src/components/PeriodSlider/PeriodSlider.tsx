@@ -1,9 +1,10 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 import gsap from "gsap";
 
 import EventSlider from "../EventSlider/EventSlider";
@@ -17,6 +18,8 @@ import {
 	TitleStyled,
 	PeriodNavButtons,
 	PaginationFractalStyled,
+	PaginationWrapperStyled,
+	NavPaginationContainer,
 } from "src/styles/PeriodSlider.styles";
 
 import ArrowIcon from "../../assets/icons/left-arrow.svg";
@@ -32,11 +35,20 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 	const [isPaginationReady, setIsPaginationReady] = useState(false);
 
 	const handleOnSlideChange = (swiper: SwiperClass) => {
-		console.log("slide clicked", swiper.activeIndex);
 		setActiveSlide(swiper.activeIndex);
-		setTimeout(() => {
-			console.log("slide changed");
-		}, 600);
+	};
+
+	const fadeSlide = () => {
+		const tl = gsap.timeline();
+		tl.set(".period-slide", {
+			opacity: 0,
+			duration: 0.5,
+		}).to(".period-slide.swiper-slide-active", {
+			opacity: 1,
+			duration: 0.5,
+			delay: 0.9,
+			ease: "power2.inOut",
+		});
 	};
 
 	const rotateBullets = (index: number) => {
@@ -61,11 +73,10 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 					0
 				)
 				.add(() => {
-					gsap.set(".period-slider-category", {
+					tl.set(".period-slider-category", {
 						display: "inline",
-					});
-					gsap.to(".period-slider-category", {
-						opasity: 1,
+					}).to(".period-slider-category", {
+						opaсity: 1,
 						duration: 1,
 						ease: "power2.inOut",
 					});
@@ -75,6 +86,7 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 
 	useEffect(() => {
 		rotateBullets(activeSlide);
+		fadeSlide();
 	}, [activeSlide]);
 
 	useEffect(() => {
@@ -102,45 +114,45 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 		prevEl: ".period-button-prev",
 		nextEl: ".period-button-next",
 	};
-	const onSwiper = (swiper: SwiperClass) => {
-		swiper.navigation.init();
-		swiper.navigation.update();
-	};
-
-	useEffect(() => {}, [paginationRef.current]);
 
 	return (
 		<PeriodSliderWrapper>
-			<TitleStyled>Исторические даты</TitleStyled>
-
-			<PaginationStyled ref={paginationRef} $numberOfSlides={periods.length} />
-
-			<PaginationFractalStyled>
-				{formatNumber(activeSlide + 1)}/{formatNumber(periods.length)}
-			</PaginationFractalStyled>
-
-			<PeriodNavButtons>
-				<PeriodPrevButtonStyled className='period-button-prev'>
-					<ArrowIcon />
-				</PeriodPrevButtonStyled>
-				<PeriodNextButtonStyled className='period-button-next'>
-					<ArrowIcon />
-				</PeriodNextButtonStyled>
-			</PeriodNavButtons>
-
+			<PaginationWrapperStyled>
+				<TitleStyled>Исторические даты</TitleStyled>
+				<PaginationStyled ref={paginationRef} $numberOfSlides={periods.length} />
+				<NavPaginationContainer>
+					<PaginationFractalStyled>
+						{formatNumber(activeSlide + 1)}/{formatNumber(periods.length)}
+					</PaginationFractalStyled>
+					<PeriodNavButtons>
+						<PeriodPrevButtonStyled className='period-button-prev'>
+							<ArrowIcon />
+						</PeriodPrevButtonStyled>
+						<PeriodNextButtonStyled className='period-button-next'>
+							<ArrowIcon />
+						</PeriodNextButtonStyled>
+					</PeriodNavButtons>
+				</NavPaginationContainer>
+			</PaginationWrapperStyled>
 			{isPaginationReady && (
 				<Swiper
-					modules={[Pagination, Navigation]}
-					className='periodSwiper'
-					noSwipingClass='periodSwiper'
+					modules={[Pagination, Navigation, EffectFade]}
+					effect='fade'
+					fadeEffect={{
+						crossFade: true,
+					}}
+					className='period-slider'
+					noSwipingClass='period-slider'
 					pagination={pagination as any}
 					navigation={navigation}
 					onSlideChange={handleOnSlideChange}
-					onSwiper={onSwiper}
+					onTransitionStart={() => {
+						gsap.killTweensOf(".period-slide"); // Останавливаем любые незаконченные анимации
+					}}
 				>
 					{periods.map((period, i) => (
-						<SwiperSlide key={i}>
-							<h3>{period.period}</h3>
+						<SwiperSlide key={i} className='period-slide'>
+							{/* <h3>{period.period}</h3> */}
 							<EventSlider events={period.events} />
 						</SwiperSlide>
 					))}
