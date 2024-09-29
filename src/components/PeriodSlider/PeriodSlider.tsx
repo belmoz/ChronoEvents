@@ -9,15 +9,15 @@ import gsap from "gsap";
 
 import EventSlider from "../EventSlider/EventSlider";
 import {
-	CenterMarkupStyled,
-	PeriodPrevButtonStyled,
-	PaginationStyled,
+	CenterMarkup,
+	PeriodPrevButton,
+	PaginationCircle,
 	PeriodSliderWrapper,
-	PeriodNextButtonStyled,
-	TitleStyled,
+	PeriodNextButton,
+	Title,
 	PeriodNavButtons,
-	PaginationFractalStyled,
-	PaginationWrapperStyled,
+	PaginationFractal,
+	PaginationWrapper,
 	NavPaginationContainer,
 } from "src/styles/PeriodSlider.styles";
 
@@ -120,25 +120,25 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 
 	return (
 		<PeriodSliderWrapper className={sliderId}>
-			<PaginationWrapperStyled>
-				<TitleStyled>{mainTitle}</TitleStyled>
-				<PaginationStyled ref={paginationRef} $numberOfSlides={periods.length} />
+			<PaginationWrapper>
+				<Title>{mainTitle}</Title>
+				<PaginationCircle ref={paginationRef} $numberOfSlides={periods.length} />
 				<NavPaginationContainer>
-					<PaginationFractalStyled>
+					<PaginationFractal>
 						{formatNumber(activeSlide + 1)}/{formatNumber(periods.length)}
-					</PaginationFractalStyled>
+					</PaginationFractal>
 					<PeriodNavButtons>
-						<PeriodPrevButtonStyled ref={prevButtonRef}>
+						<PeriodPrevButton ref={prevButtonRef}>
 							<ArrowIcon />
-						</PeriodPrevButtonStyled>
-						<PeriodNextButtonStyled ref={nextButtonRef}>
+						</PeriodPrevButton>
+						<PeriodNextButton ref={nextButtonRef}>
 							<ArrowIcon />
-						</PeriodNextButtonStyled>
+						</PeriodNextButton>
 					</PeriodNavButtons>
 				</NavPaginationContainer>
-				<CenterMarkupStyled />
+				<CenterMarkup />
 				<PeriodDates dates={periods[activeSlide].period} />
-			</PaginationWrapperStyled>
+			</PaginationWrapper>
 			{isPaginationReady && (
 				<Swiper
 					modules={[Pagination, Navigation, EffectFade]}
@@ -157,13 +157,12 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 				>
 					{periods.map((period, i) => (
 						<SwiperSlide key={i} className='period-slide'>
-							{/* <h3>{period.period}</h3> */}
 							<EventSlider events={period.events} />
 						</SwiperSlide>
 					))}
 				</Swiper>
 			)}
-			<CenterMarkupStyled $isVertical />
+			<CenterMarkup $isVertical />
 		</PeriodSliderWrapper>
 	);
 };

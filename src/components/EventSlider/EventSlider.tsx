@@ -5,8 +5,8 @@ import { Navigation } from "swiper/modules";
 import { FC, useEffect, useRef } from "react";
 import {
 	EventContent,
-	EventNextButtonStyled,
-	EventPrevButtonStyled,
+	EventNextButton,
+	EventPrevButton,
 	EventSliderWrapper,
 	EventYear,
 } from "src/styles/EventSlider.styled";
@@ -43,12 +43,12 @@ const EventSlider: FC<Props> = ({ events }) => {
 
 	return (
 		<EventSliderWrapper>
-			<EventPrevButtonStyled ref={prevButtonRef}>
+			<EventPrevButton ref={prevButtonRef}>
 				<ArrowIcon />
-			</EventPrevButtonStyled>
-			<EventNextButtonStyled ref={nextButtonRef}>
+			</EventPrevButton>
+			<EventNextButton ref={nextButtonRef}>
 				<ArrowIcon />
-			</EventNextButtonStyled>
+			</EventNextButton>
 
 			<Swiper
 				modules={[Navigation]}

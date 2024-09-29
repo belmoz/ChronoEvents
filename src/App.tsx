@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PeriodSlider from "./components/PeriodSlider/PeriodSlider";
-import { ContainerStyled, SectionStyled } from "./styles/App.styles";
+import { Container, Section } from "./styles/App.styles";
 import { GlobalStyles, NormalizeStyles } from "./styles/Global.styles";
 import { fakeFetch } from "./services/fetchData";
 import { IPeriod } from "./types/periods.types";
@@ -22,13 +22,13 @@ const App = () => {
 
 	return (
 		<>
-			<SectionStyled>
-				<ContainerStyled>
+			<Section>
+				<Container>
 					{!!periods && (
 						<PeriodSlider sliderId='historicalDates' periods={periods} title={"Исторические даты"} />
 					)}
-				</ContainerStyled>
-			</SectionStyled>
+				</Container>
+			</Section>
 			<NormalizeStyles />
 			<GlobalStyles />
 		</>

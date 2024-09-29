@@ -23,7 +23,7 @@ export const PeriodSliderWrapper = styled.div`
 	}
 `;
 
-export const PaginationWrapperStyled = styled.div`
+export const PaginationWrapper = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -31,7 +31,7 @@ export const PaginationWrapperStyled = styled.div`
 	margin: 0px 0px 56px 0px;
 `;
 
-export const TitleStyled = styled.h2`
+export const Title = styled.h2`
 	position: relative;
 	width: 431px;
 	margin: 0px 0px -81px 0px;
@@ -51,7 +51,7 @@ export const TitleStyled = styled.h2`
 const circleSize = 530;
 const topCirclePadding = 215;
 
-export const PaginationStyled = styled.div<{ $numberOfSlides: number }>(({ $numberOfSlides }) => {
+export const PaginationCircle = styled.div<{ $numberOfSlides: number }>(({ $numberOfSlides }) => {
 	const bulletSize = 6;
 	const bulletSizeActive = 56;
 	const angle = 360 / $numberOfSlides;
@@ -154,7 +154,7 @@ export const NavPaginationContainer = styled.div`
 	margin: -48px 0px 0px 0px;
 `;
 
-export const CenterMarkupStyled = styled.span<{ $isVertical?: boolean }>`
+export const CenterMarkup = styled.span<{ $isVertical?: boolean }>`
 	position: absolute;
 	top: ${({ $isVertical }) => ($isVertical ? "0" : `${circleSize / 2 + 45}px`)};
 	left: ${({ $isVertical }) => ($isVertical ? "50%" : "0")};
@@ -163,7 +163,7 @@ export const CenterMarkupStyled = styled.span<{ $isVertical?: boolean }>`
 	background-color: ${colors.foreground["010"]};
 `;
 
-export const PaginationFractalStyled = styled.div`
+export const PaginationFractal = styled.div`
 	font-size: 14px;
 	margin: 0px 0px 20px 0px;
 `;
@@ -173,7 +173,7 @@ export const PeriodNavButtons = styled.div`
 	gap: 20px;
 `;
 
-export const PeriodPrevButtonStyled = styled.button`
+export const PeriodPrevButton = styled.button`
 	width: 50px;
 	height: 50px;
 	border: 1px solid ${colors.foreground["050"]};
@@ -193,6 +193,6 @@ export const PeriodPrevButtonStyled = styled.button`
 	}
 `;
 
-export const PeriodNextButtonStyled = styled(PeriodPrevButtonStyled)`
+export const PeriodNextButton = styled(PeriodPrevButton)`
 	rotate: 180deg;
 `;

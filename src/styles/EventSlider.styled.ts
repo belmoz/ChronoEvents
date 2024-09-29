@@ -22,7 +22,7 @@ export const EventYear = styled.h3`
 
 export const EventContent = styled.p``;
 
-const EventNavButtonStyled = styled.button`
+const EventNavButton = styled.button`
 	position: absolute;
 	top: 50%;
 	translate: 0 -50%;
@@ -45,10 +45,10 @@ const EventNavButtonStyled = styled.button`
 		cursor: default;
 	}
 `;
-export const EventPrevButtonStyled = styled(EventNavButtonStyled)`
+export const EventPrevButton = styled(EventNavButton)`
 	left: -60px;
 `;
-export const EventNextButtonStyled = styled(EventNavButtonStyled)`
+export const EventNextButton = styled(EventNavButton)`
 	rotate: 180deg;
 	right: -60px;
 `;
