@@ -6,6 +6,10 @@ export const EventSliderWrapper = styled.div`
 	margin: 0 80px;
 	user-select: none;
 	cursor: pointer;
+
+	.swiper-wrapper {
+		min-width: max-content;
+	}
 `;
 
 export const EventYear = styled.h3`

@@ -24,6 +24,7 @@ export const PeriodSliderWrapper = styled.div`
 `;
 
 export const PaginationWrapperStyled = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	padding: 0px 80px 0px;
@@ -155,7 +156,7 @@ export const NavPaginationContainer = styled.div`
 
 export const CenterMarkupStyled = styled.span<{ $isVertical?: boolean }>`
 	position: absolute;
-	top: ${({ $isVertical }) => ($isVertical ? "0" : `${circleSize / 2 + topCirclePadding}px`)};
+	top: ${({ $isVertical }) => ($isVertical ? "0" : `${circleSize / 2 + 45}px`)};
 	left: ${({ $isVertical }) => ($isVertical ? "50%" : "0")};
 	width: ${({ $isVertical }) => ($isVertical ? "1px" : "100%")};
 	height: ${({ $isVertical }) => ($isVertical ? "100%" : "1px")};

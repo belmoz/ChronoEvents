@@ -1,9 +1,8 @@
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
-import { Controller, Navigation } from "swiper/modules";
-import { FC } from "react";
-import { IEvent } from "src/fakeDB/periods";
+import { Navigation } from "swiper/modules";
+import { FC, useEffect, useRef } from "react";
 import {
 	EventContent,
 	EventNextButtonStyled,
@@ -13,34 +12,41 @@ import {
 } from "src/styles/EventSlider.styled";
 
 import ArrowIcon from "../../assets/icons/left-arrow.svg";
+import { IEvent } from "src/types/periods.types";
 
 interface Props {
 	events: IEvent[];
 }
 
 const EventSlider: FC<Props> = ({ events }) => {
-	const handleOnSlideChange = () => {
-		console.log("slide clicked");
-		setTimeout(() => {
-			console.log("slide changed");
-		}, 600);
-	};
+	const prevButtonRef = useRef<HTMLButtonElement | null>(null);
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null);
+	const swiperRef = useRef<any>(null);
+
+	useEffect(() => {
+		if (swiperRef.current && prevButtonRef.current && nextButtonRef.current) {
+			swiperRef.current.params.navigation.prevEl = prevButtonRef.current;
+			swiperRef.current.params.navigation.nextEl = nextButtonRef.current;
+			swiperRef.current.navigation.init();
+			swiperRef.current.navigation.update();
+		}
+	}, [prevButtonRef, nextButtonRef]);
+
+	useEffect(() => {
+		swiperRef.current.update();
+	}, []);
 
 	const navigation = {
-		prevEl: ".event-button-prev",
-		nextEl: ".event-button-next",
-	};
-	const onSwiper = (swiper: SwiperClass) => {
-		swiper.navigation.init();
-		swiper.navigation.update();
+		prevEl: prevButtonRef.current,
+		nextEl: nextButtonRef.current,
 	};
 
 	return (
 		<EventSliderWrapper>
-			<EventPrevButtonStyled className='event-button-prev'>
+			<EventPrevButtonStyled ref={prevButtonRef}>
 				<ArrowIcon />
 			</EventPrevButtonStyled>
-			<EventNextButtonStyled className='event-button-next'>
+			<EventNextButtonStyled ref={nextButtonRef}>
 				<ArrowIcon />
 			</EventNextButtonStyled>
 
@@ -49,8 +55,7 @@ const EventSlider: FC<Props> = ({ events }) => {
 				navigation={navigation}
 				spaceBetween={80}
 				slidesPerView={events.length > 3 ? 3.4 : 3}
-				onSlideChange={handleOnSlideChange}
-				onSwiper={onSwiper}
+				onSwiper={(swiper) => (swiperRef.current = swiper)}
 			>
 				{events.map((event, i) => (
 					<SwiperSlide key={i}>

@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useId, useRef, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -8,7 +8,6 @@ import "swiper/css/effect-fade";
 import gsap from "gsap";
 
 import EventSlider from "../EventSlider/EventSlider";
-import { IPeriod } from "src/fakeDB/periods";
 import {
 	CenterMarkupStyled,
 	PeriodPrevButtonStyled,
@@ -24,14 +23,20 @@ import {
 
 import ArrowIcon from "../../assets/icons/left-arrow.svg";
 import { formatNumber } from "src/utils/helpers/index.helpers";
+import PeriodDates from "../PeriodDates/PeriodDates";
+import { IPeriod } from "src/types/periods.types";
 
 interface Props {
+	sliderId: string;
 	periods: IPeriod[];
+	title: string;
 }
 
-const PeriodSlider: FC<Props> = ({ periods }) => {
+const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 	const [activeSlide, setActiveSlide] = useState(0);
 	const paginationRef = useRef<HTMLDivElement | null>(null);
+	const prevButtonRef = useRef<HTMLButtonElement | null>(null);
+	const nextButtonRef = useRef<HTMLButtonElement | null>(null);
 	const [isPaginationReady, setIsPaginationReady] = useState(false);
 
 	const handleOnSlideChange = (swiper: SwiperClass) => {
@@ -40,10 +45,10 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 
 	const fadeSlide = () => {
 		const tl = gsap.timeline();
-		tl.set(".period-slide", {
+		tl.set(`.${sliderId} .period-slide`, {
 			opacity: 0,
 			duration: 0.5,
-		}).to(".period-slide.swiper-slide-active", {
+		}).to(`.${sliderId} .period-slide.swiper-slide-active`, {
 			opacity: 1,
 			duration: 0.5,
 			delay: 0.9,
@@ -55,8 +60,6 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 		if (paginationRef.current) {
 			const angle = 360 / periods.length;
 			const rotationAngle = -angle * index;
-			console.log(angle, index);
-			console.log(rotationAngle);
 			const tl = gsap.timeline();
 			tl.to(paginationRef.current, {
 				rotation: rotationAngle,
@@ -64,7 +67,7 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 				ease: "power2.inOut",
 			})
 				.to(
-					".period-slider-bullet",
+					`.${sliderId} .period-slider-bullet`,
 					{
 						rotation: -rotationAngle,
 						duration: 1,
@@ -73,7 +76,7 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 					0
 				)
 				.add(() => {
-					tl.set(".period-slider-category", {
+					tl.set(`.${sliderId} .period-slider-category`, {
 						display: "inline",
 					}).to(".period-slider-category", {
 						opaсity: 1,
@@ -111,28 +114,30 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 		},
 	};
 	const navigation = {
-		prevEl: ".period-button-prev",
-		nextEl: ".period-button-next",
+		prevEl: prevButtonRef.current,
+		nextEl: nextButtonRef.current,
 	};
 
 	return (
-		<PeriodSliderWrapper>
+		<PeriodSliderWrapper className={sliderId}>
 			<PaginationWrapperStyled>
-				<TitleStyled>Исторические даты</TitleStyled>
+				<TitleStyled>{mainTitle}</TitleStyled>
 				<PaginationStyled ref={paginationRef} $numberOfSlides={periods.length} />
 				<NavPaginationContainer>
 					<PaginationFractalStyled>
 						{formatNumber(activeSlide + 1)}/{formatNumber(periods.length)}
 					</PaginationFractalStyled>
 					<PeriodNavButtons>
-						<PeriodPrevButtonStyled className='period-button-prev'>
+						<PeriodPrevButtonStyled ref={prevButtonRef}>
 							<ArrowIcon />
 						</PeriodPrevButtonStyled>
-						<PeriodNextButtonStyled className='period-button-next'>
+						<PeriodNextButtonStyled ref={nextButtonRef}>
 							<ArrowIcon />
 						</PeriodNextButtonStyled>
 					</PeriodNavButtons>
 				</NavPaginationContainer>
+				<CenterMarkupStyled />
+				<PeriodDates dates={periods[activeSlide].period} />
 			</PaginationWrapperStyled>
 			{isPaginationReady && (
 				<Swiper
@@ -147,7 +152,7 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 					navigation={navigation}
 					onSlideChange={handleOnSlideChange}
 					onTransitionStart={() => {
-						gsap.killTweensOf(".period-slide"); // Останавливаем любые незаконченные анимации
+						gsap.killTweensOf(".period-slide");
 					}}
 				>
 					{periods.map((period, i) => (
@@ -158,7 +163,6 @@ const PeriodSlider: FC<Props> = ({ periods }) => {
 					))}
 				</Swiper>
 			)}
-			<CenterMarkupStyled />
 			<CenterMarkupStyled $isVertical />
 		</PeriodSliderWrapper>
 	);
