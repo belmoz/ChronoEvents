@@ -1,13 +1,36 @@
-import { useState } from "react";
-import EventSlider from "./components/EventSlider/EventSlider";
+import { useEffect, useState } from "react";
 import PeriodSlider from "./components/PeriodSlider/PeriodSlider";
-import { SwiperClass } from "swiper/react";
-import { periods } from "./fakeDB/periods";
+import { Container, Section } from "./styles/App.styles";
+import { GlobalStyles, NormalizeStyles } from "./styles/Global.styles";
+import { fakeFetch } from "./services/fetchData";
+import { IPeriod } from "./types/periods.types";
 
 const App = () => {
+	const [periods, setPeriods] = useState<IPeriod[] | null>(null);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await fakeFetch();
+				setPeriods(data as IPeriod[]);
+			} catch (error: any) {
+				console.log(error.message);
+			}
+		};
+		fetchData();
+	}, []);
+
 	return (
 		<>
-			<PeriodSlider periods={periods} />
+			<Section>
+				<Container>
+					{!!periods && (
+						<PeriodSlider sliderId='historicalDates' periods={periods} title={"Исторические даты"} />
+					)}
+				</Container>
+			</Section>
+			<NormalizeStyles />
+			<GlobalStyles />
 		</>
 	);
 };
