@@ -25,7 +25,9 @@ const App = () => {
 			<Section>
 				<Container>
 					{!!periods && (
-						<PeriodSlider sliderId='historicalDates' periods={periods} title={"Исторические даты"} />
+						<>
+							<PeriodSlider sliderId='historicalDates' periods={periods} title={"Исторические даты"} />
+						</>
 					)}
 				</Container>
 			</Section>

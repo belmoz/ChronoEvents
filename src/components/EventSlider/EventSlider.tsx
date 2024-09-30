@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import { Navigation } from "swiper/modules";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import {
 	EventContent,
 	EventNextButton,

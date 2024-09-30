@@ -1,4 +1,4 @@
-import { FC, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -41,6 +41,14 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 	const prevButtonRef = useRef<HTMLButtonElement | null>(null);
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null);
 	const [isPaginationReady, setIsPaginationReady] = useState(false);
+
+	if (periods.length > 6) {
+		console.error("Viewed just 6 periods");
+		periods.length = Math.min(periods.length, 6);
+	} else if (periods.length < 2) {
+		console.error("Periods list is too short");
+		return <h2>Periods list is too short!</h2>;
+	}
 
 	const isScreenWider = useScreenWidthChecker();
 	const isScreenWiderMobileL = isScreenWider(breakpoints.mobileL);
@@ -176,7 +184,9 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 			<Title>{mainTitle}</Title>
 			{isScreenWiderMobileL && renderPaginationWrapper()}
 			<PeriodDates dates={periods[activeSlide].period} />
-			<PeriodCategory className='period-category'>{periods[activeSlide].category}</PeriodCategory>
+			{!isScreenWiderMobileL && (
+				<PeriodCategory className='period-category'>{periods[activeSlide].category}</PeriodCategory>
+			)}
 			<CenterMarkup className='markup' />
 			{isPaginationReady && (
 				<Swiper
