@@ -1,4 +1,5 @@
 import { colors } from "src/utils/constants/colors.constants";
+import { breakpoints } from "src/utils/constants/media.constants";
 import styled from "styled-components";
 
 export const EventSliderWrapper = styled.div`
@@ -6,16 +7,23 @@ export const EventSliderWrapper = styled.div`
 	margin: 0 80px;
 	user-select: none;
 	cursor: pointer;
-
-	.swiper-wrapper {
+	& .swiper-wrapper {
 		min-width: max-content;
+	}
+	& .swiper-slide-active {
+	}
+	@media (max-width: ${breakpoints.mobileL}px) {
+		margin: 0 0px;
+		& .swiper-slide {
+			&:not(&-active) {
+				opacity: 0.4;
+			}
+		}
 	}
 `;
 
 export const EventYear = styled.h3`
 	font-family: "Bebas Neue", sans-serif;
-	font-size: 25px;
-	line-height: 120%;
 	color: ${colors.tertiary.main};
 	margin: 0px 0px 15px 0px;
 `;

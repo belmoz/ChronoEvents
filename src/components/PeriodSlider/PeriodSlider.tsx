@@ -1,4 +1,4 @@
-import { FC, useEffect, useId, useRef, useState } from "react";
+import { FC, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -11,7 +11,7 @@ import EventSlider from "../EventSlider/EventSlider";
 import {
 	CenterMarkup,
 	PeriodPrevButton,
-	PaginationCircle,
+	PaginationStyled,
 	PeriodSliderWrapper,
 	PeriodNextButton,
 	Title,
@@ -19,12 +19,15 @@ import {
 	PaginationFractal,
 	PaginationWrapper,
 	NavPaginationContainer,
+	PeriodCategory,
 } from "src/styles/PeriodSlider.styles";
 
 import ArrowIcon from "../../assets/icons/left-arrow.svg";
 import { formatNumber } from "src/utils/helpers/index.helpers";
 import PeriodDates from "../PeriodDates/PeriodDates";
 import { IPeriod } from "src/types/periods.types";
+import { breakpoints } from "src/utils/constants/media.constants";
+import { useScreenWidthChecker } from "src/hooks/useScreenWidth";
 
 interface Props {
 	sliderId: string;
@@ -39,8 +42,16 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null);
 	const [isPaginationReady, setIsPaginationReady] = useState(false);
 
+	const isScreenWider = useScreenWidthChecker();
+	const isScreenWiderMobileL = isScreenWider(breakpoints.mobileL);
+
 	const handleOnSlideChange = (swiper: SwiperClass) => {
 		setActiveSlide(swiper.activeIndex);
+		gsap.set([`.${sliderId} .period-category`, `.${sliderId} .markup`], {
+			opacity: 0,
+			duration: 5,
+			ease: "power2.inOut",
+		});
 	};
 
 	const fadeSlide = () => {
@@ -51,7 +62,16 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 		}).to(`.${sliderId} .period-slide.swiper-slide-active`, {
 			opacity: 1,
 			duration: 0.5,
-			delay: 0.9,
+			delay: isScreenWiderMobileL ? 0.9 : 0.3,
+			ease: "power2.inOut",
+		});
+	};
+
+	const fadeCategory = () => {
+		gsap.to([`.${sliderId} .period-category`, `.${sliderId} .markup`], {
+			opacity: 1,
+			duration: 0.5,
+			delay: 0.3,
 			ease: "power2.inOut",
 		});
 	};
@@ -88,7 +108,10 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 	};
 
 	useEffect(() => {
-		rotateBullets(activeSlide);
+		if (isScreenWiderMobileL) {
+			rotateBullets(activeSlide);
+		}
+		fadeCategory();
 		fadeSlide();
 	}, [activeSlide]);
 
@@ -98,31 +121,39 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 		}
 	}, [paginationRef.current]);
 
-	const pagination = {
+	const paginationSwiper = {
 		el: paginationRef.current,
 		type: "bullets",
 		clickable: true,
 		renderBullet: function (index: number, className: string) {
-			return `<span class="${className}">
-                        <span class="period-slider-bullet">
-                            ${index + 1}
-                            <span class="period-slider-category">
-                                ${periods[index].category}
-                            </span>
-                        </span>
-                    </span>`;
+			return `<span class="${className}"></span>`;
 		},
 	};
-	const navigation = {
+	const navigationSwiper = {
 		prevEl: prevButtonRef.current,
 		nextEl: nextButtonRef.current,
 	};
+	const breakpointsSwiper = {
+		[breakpoints.mobileL]: {
+			pagination: {
+				renderBullet: function (index: number, className: string) {
+					return `<span class="${className}">
+								<span class="period-slider-bullet">
+								${index + 1}
+								<h3 class="period-slider-category">
+									${periods[index].category}
+								</h3>
+							</span>
+						</span>`;
+				},
+			},
+		},
+	};
 
-	return (
-		<PeriodSliderWrapper className={sliderId}>
+	const renderPaginationWrapper = () => {
+		return (
 			<PaginationWrapper>
-				<Title>{mainTitle}</Title>
-				<PaginationCircle ref={paginationRef} $numberOfSlides={periods.length} />
+				<PaginationStyled ref={paginationRef} $numberOfSlides={periods.length}></PaginationStyled>
 				<NavPaginationContainer>
 					<PaginationFractal>
 						{formatNumber(activeSlide + 1)}/{formatNumber(periods.length)}
@@ -136,9 +167,17 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 						</PeriodNextButton>
 					</PeriodNavButtons>
 				</NavPaginationContainer>
-				<CenterMarkup />
-				<PeriodDates dates={periods[activeSlide].period} />
 			</PaginationWrapper>
+		);
+	};
+
+	return (
+		<PeriodSliderWrapper className={sliderId}>
+			<Title>{mainTitle}</Title>
+			{isScreenWiderMobileL && renderPaginationWrapper()}
+			<PeriodDates dates={periods[activeSlide].period} />
+			<PeriodCategory className='period-category'>{periods[activeSlide].category}</PeriodCategory>
+			<CenterMarkup className='markup' />
 			{isPaginationReady && (
 				<Swiper
 					modules={[Pagination, Navigation, EffectFade]}
@@ -148,12 +187,13 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 					}}
 					className='period-slider'
 					noSwipingClass='period-slider'
-					pagination={pagination as any}
-					navigation={navigation}
+					pagination={paginationSwiper as any}
+					navigation={navigationSwiper}
 					onSlideChange={handleOnSlideChange}
 					onTransitionStart={() => {
-						gsap.killTweensOf(".period-slide");
+						gsap.killTweensOf([".period-slide", ".period-category"]);
 					}}
+					breakpoints={breakpointsSwiper}
 				>
 					{periods.map((period, i) => (
 						<SwiperSlide key={i} className='period-slide'>
@@ -162,7 +202,8 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 					))}
 				</Swiper>
 			)}
-			<CenterMarkup $isVertical />
+			{!isScreenWiderMobileL && renderPaginationWrapper()}
+			{isScreenWiderMobileL && <CenterMarkup $isVertical />}
 		</PeriodSliderWrapper>
 	);
 };

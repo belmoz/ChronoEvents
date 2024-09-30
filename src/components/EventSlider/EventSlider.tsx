@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import { Navigation } from "swiper/modules";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import {
 	EventContent,
 	EventNextButton,
@@ -13,6 +13,7 @@ import {
 
 import ArrowIcon from "../../assets/icons/left-arrow.svg";
 import { IEvent } from "src/types/periods.types";
+import { breakpoints } from "src/utils/constants/media.constants";
 
 interface Props {
 	events: IEvent[];
@@ -36,9 +37,17 @@ const EventSlider: FC<Props> = ({ events }) => {
 		swiperRef.current.update();
 	}, []);
 
-	const navigation = {
+	const navigationSwiper = {
 		prevEl: prevButtonRef.current,
 		nextEl: nextButtonRef.current,
+	};
+
+	const breakpointsSwiper = {
+		[breakpoints.mobileL]: {
+			slidesPerView: events.length > 3 ? 3.4 : 3,
+			spaceBetween: 80,
+			navigation: navigationSwiper,
+		},
 	};
 
 	return (
@@ -52,10 +61,11 @@ const EventSlider: FC<Props> = ({ events }) => {
 
 			<Swiper
 				modules={[Navigation]}
-				navigation={navigation}
-				spaceBetween={80}
-				slidesPerView={events.length > 3 ? 3.4 : 3}
+				navigation={false}
+				spaceBetween={25}
+				slidesPerView={1.5}
 				onSwiper={(swiper) => (swiperRef.current = swiper)}
+				breakpoints={breakpointsSwiper}
 			>
 				{events.map((event, i) => (
 					<SwiperSlide key={i}>

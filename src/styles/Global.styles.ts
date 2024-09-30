@@ -112,16 +112,40 @@ export const GlobalStyles = createGlobalStyle`
         font-weight: bold;
     }
 
+    h3 {
+        font-size: 25px;
+        line-height: 120%;
+    }
+
     p {
         font-size: 20px;
         line-height: 30px;
     }
 
-
     @media (max-width: ${breakpoints.mobileL}px) {
-        body {
-            font-size: 14px;
-            background-color: lightblue;
+        h2 {
+            font-size: 26px;
         }
-}
+        h3 {
+            font-size: 22px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 145%;
+        }
+    }
+    
+    @media (max-width: ${breakpoints.mobileS}px) {
+        h2 {
+            font-size: 20px;
+        }
+        h3 {
+            font-size: 16px;
+        }
+        p {
+            font-size: 14px;
+            line-height: 145%;
+        }
+    }
+    
 `;
