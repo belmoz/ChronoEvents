@@ -247,7 +247,7 @@ export const PeriodNavButtons = styled.div`
 	}
 `;
 
-export const PeriodPrevButton = styled.button`
+export const PeriodNavButton = styled.button`
 	width: 50px;
 	height: 50px;
 	border: 1px solid ${colors.foreground["050"]};
@@ -278,8 +278,11 @@ export const PeriodPrevButton = styled.button`
 	}
 `;
 
-export const PeriodNextButton = styled(PeriodPrevButton)`
-	rotate: 180deg;
+export const PeriodPrevButton = styled(PeriodNavButton)``;
+export const PeriodNextButton = styled(PeriodNavButton)`
+	& svg {
+		rotate: 180deg;
+	}
 `;
 
 export const CenterMarkup = styled.span<{ $isVertical?: boolean }>`

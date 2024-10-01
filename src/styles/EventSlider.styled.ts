@@ -57,6 +57,8 @@ export const EventPrevButton = styled(EventNavButton)`
 	left: -60px;
 `;
 export const EventNextButton = styled(EventNavButton)`
-	rotate: 180deg;
 	right: -60px;
+	& svg {
+		rotate: 180deg;
+	}
 `;

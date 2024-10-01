@@ -11,7 +11,8 @@ import {
 	EventYear,
 } from "src/styles/EventSlider.styled";
 
-import ArrowIcon from "../../assets/icons/left-arrow.svg";
+import ChevronIcon from "../../assets/icons/chevron-left.svg";
+
 import { IEvent } from "src/types/periods.types";
 import { breakpoints } from "src/utils/constants/media.constants";
 
@@ -53,10 +54,10 @@ const EventSlider: FC<Props> = ({ events }) => {
 	return (
 		<EventSliderWrapper>
 			<EventPrevButton ref={prevButtonRef}>
-				<ArrowIcon />
+				<ChevronIcon />
 			</EventPrevButton>
 			<EventNextButton ref={nextButtonRef}>
-				<ArrowIcon />
+				<ChevronIcon />
 			</EventNextButton>
 
 			<Swiper

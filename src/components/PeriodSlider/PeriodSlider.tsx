@@ -10,19 +10,19 @@ import gsap from "gsap";
 import EventSlider from "../EventSlider/EventSlider";
 import {
 	CenterMarkup,
-	PeriodPrevButton,
 	PaginationStyled,
 	PeriodSliderWrapper,
-	PeriodNextButton,
 	Title,
 	PeriodNavButtons,
 	PaginationFractal,
 	PaginationWrapper,
 	NavPaginationContainer,
 	PeriodCategory,
+	PeriodPrevButton,
+	PeriodNextButton,
 } from "src/styles/PeriodSlider.styles";
 
-import ArrowIcon from "../../assets/icons/left-arrow.svg";
+import ChevronIcon from "../../assets/icons/chevron-left.svg";
 import { formatNumber } from "src/utils/helpers/index.helpers";
 import PeriodDates from "../PeriodDates/PeriodDates";
 import { IPeriod } from "src/types/periods.types";
@@ -168,10 +168,10 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 					</PaginationFractal>
 					<PeriodNavButtons>
 						<PeriodPrevButton ref={prevButtonRef}>
-							<ArrowIcon />
+							<ChevronIcon />
 						</PeriodPrevButton>
 						<PeriodNextButton ref={nextButtonRef}>
-							<ArrowIcon />
+							<ChevronIcon />
 						</PeriodNextButton>
 					</PeriodNavButtons>
 				</NavPaginationContainer>
