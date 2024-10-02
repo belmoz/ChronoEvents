@@ -27,8 +27,6 @@ const App = () => {
 					{!!periods && (
 						<>
 							<PeriodSlider sliderId='historicalDates' periods={periods} title={"Исторические даты"} />
-							<PeriodSlider sliderId='historialDates' periods={periods} title={"Исторические даты"} />
-							<PeriodSlider sliderId='histoicalDates' periods={periods} title={"Исторические даты"} />
 						</>
 					)}
 				</Container>
