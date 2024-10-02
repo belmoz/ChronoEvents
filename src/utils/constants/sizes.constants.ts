@@ -1,1 +1,4 @@
-export const circleSize = 530;
+export const circleSize = {
+	small: 400,
+	large: 530,
+};

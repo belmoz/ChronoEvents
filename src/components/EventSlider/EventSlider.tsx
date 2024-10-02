@@ -44,8 +44,23 @@ const EventSlider: FC<Props> = ({ events }) => {
 	};
 
 	const breakpointsSwiper = {
-		[breakpoints.mobileL]: {
-			slidesPerView: events.length > 3 ? 3.4 : 3,
+		[breakpoints.tablet]: {
+			slidesPerView: 2,
+			spaceBetween: 50,
+			navigation: navigationSwiper,
+		},
+		1200: {
+			slidesPerView: 2.4,
+			spaceBetween: 60,
+			navigation: navigationSwiper,
+		},
+		[breakpoints.laptopL]: {
+			slidesPerView: 3,
+			spaceBetween: 70,
+			navigation: navigationSwiper,
+		},
+		[breakpoints.container]: {
+			slidesPerView: 3.4,
 			spaceBetween: 80,
 			navigation: navigationSwiper,
 		},
@@ -64,8 +79,10 @@ const EventSlider: FC<Props> = ({ events }) => {
 				modules={[Navigation]}
 				navigation={false}
 				spaceBetween={25}
-				slidesPerView={1.5}
+				slidesPerView={1.6}
 				onSwiper={(swiper) => (swiperRef.current = swiper)}
+				slidesOffsetBefore={20}
+				slidesOffsetAfter={20}
 				breakpoints={breakpointsSwiper}
 			>
 				{events.map((event, i) => (

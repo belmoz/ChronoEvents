@@ -12,6 +12,14 @@ export const EventSliderWrapper = styled.div`
 	}
 	& .swiper-slide-active {
 	}
+	@media (max-width: ${breakpoints.laptop}px) {
+		margin: 0 60px;
+		& .swiper-slide {
+			&:not(&-active) {
+				opacity: 0.4;
+			}
+		}
+	}
 	@media (max-width: ${breakpoints.mobileL}px) {
 		margin: 0 0px;
 		& .swiper-slide {
@@ -52,13 +60,26 @@ const EventNavButton = styled.button`
 		display: none;
 		cursor: default;
 	}
+	@media (max-width: ${breakpoints.laptop}px) {
+		width: 30px;
+		height: 30px;
+		& svg {
+			height: 10px;
+		}
+	}
 `;
 export const EventPrevButton = styled(EventNavButton)`
 	left: -60px;
+	@media (max-width: ${breakpoints.laptop}px) {
+		left: -45px;
+	}
 `;
 export const EventNextButton = styled(EventNavButton)`
 	right: -60px;
 	& svg {
 		rotate: 180deg;
+	}
+	@media (max-width: ${breakpoints.laptop}px) {
+		right: -45px;
 	}
 `;

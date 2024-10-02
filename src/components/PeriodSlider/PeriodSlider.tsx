@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -9,17 +9,20 @@ import gsap from "gsap";
 
 import EventSlider from "../EventSlider/EventSlider";
 import {
-	CenterMarkup,
 	PaginationStyled,
 	PeriodSliderWrapper,
 	Title,
 	PeriodNavButtons,
 	PaginationFractal,
-	PaginationWrapper,
 	NavPaginationContainer,
 	PeriodCategory,
 	PeriodPrevButton,
 	PeriodNextButton,
+	SliderWithNavination,
+	PaginationWrapper,
+	HorizontalMarkup,
+	VerticalMarkup,
+	PeriodCategoryWrapper,
 } from "src/styles/PeriodSlider.styles";
 
 import ChevronIcon from "../../assets/icons/chevron-left.svg";
@@ -27,7 +30,6 @@ import { formatNumber } from "src/utils/helpers/index.helpers";
 import PeriodDates from "../PeriodDates/PeriodDates";
 import { IPeriod } from "src/types/periods.types";
 import { breakpoints } from "src/utils/constants/media.constants";
-import { useScreenWidthChecker } from "src/hooks/useScreenWidth";
 
 interface Props {
 	sliderId: string;
@@ -37,6 +39,7 @@ interface Props {
 
 const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 	const [activeSlide, setActiveSlide] = useState(0);
+	const swiperRef = useRef<SwiperRef | null>(null);
 	const paginationRef = useRef<HTMLDivElement | null>(null);
 	const prevButtonRef = useRef<HTMLButtonElement | null>(null);
 	const nextButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -50,12 +53,9 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 		return <h2>Periods list is too short!</h2>;
 	}
 
-	const isScreenWider = useScreenWidthChecker();
-	const isScreenWiderMobileL = isScreenWider(breakpoints.mobileL);
-
 	const handleOnSlideChange = (swiper: SwiperClass) => {
 		setActiveSlide(swiper.activeIndex);
-		gsap.set([`.${sliderId} .period-category`, `.${sliderId} .markup`], {
+		gsap.set(`.${sliderId} .period-category`, {
 			opacity: 0,
 			duration: 5,
 			ease: "power2.inOut",
@@ -63,20 +63,30 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 	};
 
 	const fadeSlide = () => {
-		const tl = gsap.timeline();
-		tl.set(`.${sliderId} .period-slide`, {
-			opacity: 0,
-			duration: 0.5,
-		}).to(`.${sliderId} .period-slide.swiper-slide-active`, {
-			opacity: 1,
-			duration: 0.5,
-			delay: isScreenWiderMobileL ? 0.9 : 0.3,
-			ease: "power2.inOut",
-		});
+		const mm = gsap.matchMedia();
+		mm.add(
+			{
+				isDesktop: `(min-width: ${breakpoints.laptop + 1}px)`,
+				isLaptop: `(max-width: ${breakpoints.laptop}px)`,
+			},
+			(context) => {
+				let { isDesktop, isLaptop } = context.conditions;
+				const tl = gsap.timeline();
+				tl.set(`.${sliderId} .period-slide`, {
+					opacity: 0,
+					duration: 0.5,
+				}).to(`.${sliderId} .period-slide.swiper-slide-active`, {
+					opacity: 1,
+					duration: 0.5,
+					delay: isDesktop ? 0.9 : 0.3,
+					ease: "power2.inOut",
+				});
+			}
+		);
 	};
 
 	const fadeCategory = () => {
-		gsap.to([`.${sliderId} .period-category`, `.${sliderId} .markup`], {
+		gsap.to(`.${sliderId} .period-category`, {
 			opacity: 1,
 			duration: 0.5,
 			delay: 0.3,
@@ -88,37 +98,45 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 		if (paginationRef.current) {
 			const angle = 360 / periods.length;
 			const rotationAngle = -angle * index;
-			const tl = gsap.timeline();
-			tl.to(paginationRef.current, {
-				rotation: rotationAngle,
-				duration: 1,
-				ease: "power2.inOut",
-			})
-				.to(
-					`.${sliderId} .period-slider-bullet`,
-					{
-						rotation: -rotationAngle,
-						duration: 1,
-						ease: "power2.inOut",
-					},
-					0
-				)
-				.add(() => {
-					tl.set(`.${sliderId} .period-slider-category`, {
-						display: "inline",
-					}).to(".period-slider-category", {
-						opaсity: 1,
-						duration: 1,
-						ease: "power2.inOut",
+			const mm = gsap.matchMedia();
+			mm.add(`(min-width: ${breakpoints.laptop + 1}px)`, () => {
+				const tl = gsap.timeline();
+
+				tl.to(paginationRef.current, {
+					rotation: rotationAngle,
+					duration: 1,
+					ease: "power2.inOut",
+				})
+					.to(
+						`.${sliderId} .period-slider-bullet`,
+						{
+							rotation: -rotationAngle,
+							duration: 1,
+							ease: "power2.inOut",
+						},
+						0
+					)
+					.add(() => {
+						tl.set(`.${sliderId} .period-slider-category`, {
+							display: "inline",
+						}).to(".period-slider-category", {
+							opaсity: 1,
+							duration: 1,
+							ease: "power2.inOut",
+						});
 					});
-				});
+				return () => {
+					gsap.matchMediaRefresh();
+					gsap.set(paginationRef.current, {
+						rotation: -rotationAngle,
+					});
+				};
+			});
 		}
 	};
 
 	useEffect(() => {
-		if (isScreenWiderMobileL) {
-			rotateBullets(activeSlide);
-		}
+		rotateBullets(activeSlide);
 		fadeCategory();
 		fadeSlide();
 	}, [activeSlide]);
@@ -129,39 +147,41 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 		}
 	}, [paginationRef.current]);
 
+	const navigationSwiper = {
+		prevEl: prevButtonRef.current,
+		nextEl: nextButtonRef.current,
+	};
+
 	const paginationSwiper = {
 		el: paginationRef.current,
 		type: "bullets",
 		clickable: true,
 		renderBullet: function (index: number, className: string) {
-			return `<span class="${className}"></span>`;
-		},
-	};
-	const navigationSwiper = {
-		prevEl: prevButtonRef.current,
-		nextEl: nextButtonRef.current,
-	};
-	const breakpointsSwiper = {
-		[breakpoints.mobileL]: {
-			pagination: {
-				renderBullet: function (index: number, className: string) {
-					return `<span class="${className}">
+			return `<span class="${className}">
 								<span class="period-slider-bullet">
-								${index + 1}
-								<h3 class="period-slider-category">
-									${periods[index].category}
-								</h3>
-							</span>
-						</span>`;
-				},
-			},
+									${index + 1}
+									<h3 class="period-slider-category">
+										${periods[index].category}
+									</h3>
+								</span>
+							</span>`;
 		},
 	};
 
-	const renderPaginationWrapper = () => {
-		return (
+	return (
+		<PeriodSliderWrapper className={sliderId}>
+			<Title>{mainTitle}</Title>
+			<PeriodDates dates={periods[activeSlide].period} />
+			<PeriodCategoryWrapper className='period-category'>
+				<PeriodCategory>{periods[activeSlide].category}</PeriodCategory>
+				<HorizontalMarkup className='markup-horizontal-mobile' />
+			</PeriodCategoryWrapper>
+
 			<PaginationWrapper>
 				<PaginationStyled ref={paginationRef} $numberOfSlides={periods.length}></PaginationStyled>
+				<HorizontalMarkup className='markup-horizontal-center' />
+			</PaginationWrapper>
+			<SliderWithNavination>
 				<NavPaginationContainer>
 					<PaginationFractal>
 						{formatNumber(activeSlide + 1)}/{formatNumber(periods.length)}
@@ -175,45 +195,35 @@ const PeriodSlider: FC<Props> = ({ sliderId, periods, title: mainTitle }) => {
 						</PeriodNextButton>
 					</PeriodNavButtons>
 				</NavPaginationContainer>
-			</PaginationWrapper>
-		);
-	};
+				{isPaginationReady && (
+					<Swiper
+						ref={swiperRef}
+						observer={true}
+						observeParents={true}
+						modules={[Pagination, Navigation, EffectFade]}
+						effect='fade'
+						fadeEffect={{
+							crossFade: true,
+						}}
+						className='period-slider'
+						noSwipingClass='period-slider'
+						pagination={paginationSwiper as any}
+						navigation={navigationSwiper}
+						onSlideChange={handleOnSlideChange}
+						onTransitionStart={() => {
+							gsap.killTweensOf([".period-slide", ".period-category"]);
+						}}
+					>
+						{periods.map((period, i) => (
+							<SwiperSlide key={i} className='period-slide'>
+								<EventSlider events={period.events} />
+							</SwiperSlide>
+						))}
+					</Swiper>
+				)}
+			</SliderWithNavination>
 
-	return (
-		<PeriodSliderWrapper className={sliderId}>
-			<Title>{mainTitle}</Title>
-			{isScreenWiderMobileL && renderPaginationWrapper()}
-			<PeriodDates dates={periods[activeSlide].period} />
-			{!isScreenWiderMobileL && (
-				<PeriodCategory className='period-category'>{periods[activeSlide].category}</PeriodCategory>
-			)}
-			<CenterMarkup className='markup' />
-			{isPaginationReady && (
-				<Swiper
-					modules={[Pagination, Navigation, EffectFade]}
-					effect='fade'
-					fadeEffect={{
-						crossFade: true,
-					}}
-					className='period-slider'
-					noSwipingClass='period-slider'
-					pagination={paginationSwiper as any}
-					navigation={navigationSwiper}
-					onSlideChange={handleOnSlideChange}
-					onTransitionStart={() => {
-						gsap.killTweensOf([".period-slide", ".period-category"]);
-					}}
-					breakpoints={breakpointsSwiper}
-				>
-					{periods.map((period, i) => (
-						<SwiperSlide key={i} className='period-slide'>
-							<EventSlider events={period.events} />
-						</SwiperSlide>
-					))}
-				</Swiper>
-			)}
-			{!isScreenWiderMobileL && renderPaginationWrapper()}
-			{isScreenWiderMobileL && <CenterMarkup $isVertical />}
+			<VerticalMarkup />
 		</PeriodSliderWrapper>
 	);
 };

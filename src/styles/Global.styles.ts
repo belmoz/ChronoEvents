@@ -110,42 +110,99 @@ export const GlobalStyles = createGlobalStyle`
         font-size: 56px;
         line-height: 120%;
         font-weight: bold;
+        @media (max-width: ${breakpoints.desktop}px) {
+            font-size: 56px;
+        }
+        @media (max-width: ${breakpoints.container}px) {
+            font-size: 48.8px;
+        }
+        @media (max-width: ${breakpoints.laptopL}px) {
+            font-size: 45.2px;
+        }
+        @media (max-width: 1200px) {
+            font-size: 39.8px;
+        }
+        @media (max-width: ${breakpoints.laptop}px) {
+            font-size: 35.84px;
+        }
+        @media (max-width: ${breakpoints.tablet}px) {
+            font-size: 30.08px;
+        }
+        @media (max-width: ${breakpoints.mobileL}px) {
+            font-size: 22.3625px;
+        }
+        @media (max-width: ${breakpoints.mobileM}px) {
+            font-size: 21.2375px;
+        }
+        @media (max-width: ${breakpoints.mobileS}px) {
+            font-size: 20px;
+}
     }
 
     h3 {
         font-size: 25px;
         line-height: 120%;
+        @media (max-width: ${breakpoints.desktop}px) {
+            font-size: 25px;
+        }
+        @media (max-width: ${breakpoints.container}px) {
+            font-size: 23.2px;
+        }
+        @media (max-width: ${breakpoints.laptopL}px) {
+            font-size: 22.3px;
+        }
+        @media (max-width: 1200px) {
+            font-size: 20.95px;
+        }
+        @media (max-width: ${breakpoints.laptop}px) {
+            font-size: 19.96px;
+        }
+        @media (max-width: ${breakpoints.tablet}px) {
+            font-size: 18.52px;
+        }
+        @media (max-width: ${breakpoints.mobileL}px) {
+            font-size: 16.590625px;
+        }
+        @media (max-width: ${breakpoints.mobileM}px) {
+            font-size: 16.309375px;
+        }
+        @media (max-width: ${breakpoints.mobileS}px) {
+            font-size: 16px;
+        }
     }
 
     p {
         font-size: 20px;
-        line-height: 30px;
-    }
-
-    @media (max-width: ${breakpoints.mobileL}px) {
-        h2 {
-            font-size: 26px;
-        }
-        h3 {
-            font-size: 22px;
-        }
-        p {
-            font-size: 18px;
-            line-height: 145%;
-        }
-    }
-    
-    @media (max-width: ${breakpoints.mobileS}px) {
-        h2 {
+        line-height: 145%;
+        @media (max-width: ${breakpoints.desktop}px) {
             font-size: 20px;
         }
-        h3 {
-            font-size: 16px;
+        @media (max-width: ${breakpoints.container}px) {
+            font-size: 18.8px;
         }
-        p {
+        @media (max-width: ${breakpoints.laptopL}px) {
+            font-size: 18.2px;
+        }
+        @media (max-width: 1200px) {
+            font-size: 17.3px;
+        }
+        @media (max-width: ${breakpoints.laptop}px) {
+            font-size: 16.64px;
+        }
+        @media (max-width: ${breakpoints.tablet}px) {
+            font-size: 15.68px;
+        }
+        @media (max-width: ${breakpoints.mobileL}px) {
+            font-size: 14.39375px;
+        }
+        @media (max-width: ${breakpoints.mobileM}px) {
+            font-size: 14.20625px;
+        }
+        @media (max-width: ${breakpoints.mobileS}px) {
             font-size: 14px;
-            line-height: 145%;
         }
     }
+
+    
     
 `;
