@@ -14,7 +14,7 @@ export const PeriodDatesWrapper = styled.div`
 	letter-spacing: -0.02ch;
 	gap: 110px;
 	@media (max-width: ${breakpoints.container}px) {
-		top: 400px;
+		top: 455px;
 	}
 	@media (max-width: ${breakpoints.laptopL}px) {
 		top: 335px;
